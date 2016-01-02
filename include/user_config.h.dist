@@ -1,0 +1,4 @@
+#define SSID ""
+#define SSID_PASSWORD ""
+#define API_HOST ""
+#define API_SECRET ""
