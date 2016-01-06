@@ -26,9 +26,12 @@ void ICACHE_FLASH_ATTR network_setup(void) {
 	wifi_station_set_config(&config);
 
 	wifi_set_event_handler_cb(network_wifi_callback);
+	wifi_station_connect();
 }
 
 static void ICACHE_FLASH_ATTR network_wifi_callback(System_Event_t *event) {
+	os_printf("WIFI: %d", event->event);
+
 	if (event->event == EVENT_STAMODE_GOT_IP) {
 		os_printf(
 			"WIFI: Got IP " IPSTR "/" IPSTR " (" IPSTR ")\n",
@@ -37,29 +40,12 @@ static void ICACHE_FLASH_ATTR network_wifi_callback(System_Event_t *event) {
 			IP2STR(&event->event_info.got_ip.gw)
 		);
 
-		struct espconn api_conn;
-		ip_addr_t api_ip;
-		espconn_gethostbyname(&api_conn, API_HOST, &api_ip, network_dns_callback);
-
-		// struct dht_result sensor;
-		// uint8_t result = dht_fetch_avg(3, &sensor);
-
-		// os_printf(
-		// 	"%d/TEMP: %d HUM: %d\n",
-		// 	result,
-		// 	sensor.temperature,
-		// 	sensor.humidity
-		// );
-	}
-}
-
-static void ICACHE_FLASH_ATTR network_dns_callback(const char *name, ip_addr_t *ip, void *arg) {
-	struct espconn *api_conn = (struct espconn *)arg;
-
-	if(ip == NULL) {
-		os_printf("WIFI: DNS Lookup failed: %s\n", name);
-		return;
+		post_sensors();
 	}
 
-	os_printf("WIFI: Connecting to " IPSTR "\n", IP2STR(&ip->addr));
+	if (event->event == EVENT_STAMODE_DISCONNECTED) {
+		os_printf("WIFI: Disconnected. Going to sleep.\n");
+		deep_sleep_set_option(0);
+		system_deep_sleep(API_INTERVAL * 1000 * 1000);
+	}
 }

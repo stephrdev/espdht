@@ -1,4 +1,5 @@
 #define SSID ""
 #define SSID_PASSWORD ""
-#define API_HOST ""
+#define API_ENDPOINT ""
 #define API_SECRET ""
+#define API_INTERVAL 300
