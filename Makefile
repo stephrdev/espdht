@@ -5,8 +5,8 @@
 
 
 TARGET = app
-MODULES = user
-LIBS = c gcc hal pp phy net80211 lwip wpa main
+MODULES = user lib/esphttpclient
+LIBS = c gcc hal pp phy net80211 lwip wpa ssl main
 
 
 # Changes below are not needed most of the time.
