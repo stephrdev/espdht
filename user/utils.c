@@ -30,8 +30,7 @@ void ICACHE_FLASH_ATTR post_sensors(void) {
 	
 	if (current_post == POST_HUMIDITY) {
 		current_post = POST_VOLTAGE;
-		// post_value("voltage", 0);
-		wifi_station_disconnect();
+		post_value("voltage", (uint8_t)system_system_get_vdd33());
 		return;
 	}
 	
