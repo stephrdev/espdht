@@ -33,7 +33,7 @@ LD := $(XTENSA_TOOLS_DIR)/xtensa-lx106-elf-gcc
 ESPTOOL := python2 $(XTENSA_TOOLS_DIR)/esptool.py
 ESPTERM ?= picocom
 ESPPORT ?= /dev/ttyUSB0
-ESPBAUD ?= 115200
+ESPBAUD ?= 38400
 ESPTERM_OPTIONS ?= --baud $(ESPBAUD) $(ESPPORT)
 
 # DONT CHANGE STUFF BELOW.
